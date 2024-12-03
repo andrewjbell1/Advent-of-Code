@@ -64,7 +64,7 @@ public abstract class Day {
         InputFiles files = loadFiles();
         String exampleResult = part2(files.example);
         if (!exampleResult.equals(files.examplePart2Result())){
-            throw new RuntimeException("Part 2 - Expected: " + files.examplePart1Result + " but got: " + exampleResult);
+            throw new RuntimeException("Part 2 - Expected: " + files.examplePart2Result + " but got: " + exampleResult);
         }
         System.out.println("Part 2: "+ part2(files.testcase));
     }
