@@ -20,13 +20,10 @@ public class Day3 extends Day {
         Pattern p = Pattern.compile("mul\\(([0-9]+),([0-9]+)\\)");
         Matcher matcher = p.matcher(input);
         int total = 0;
-        while(matcher.find()){
-            int num1= Integer.parseInt(matcher.group(1));
-            int num2 = Integer.parseInt(matcher.group(2));
-            int sum  = num1* num2;
-            total += sum;
+        while (matcher.find()) {
+            total += Integer.parseInt(matcher.group(1)) * Integer.parseInt(matcher.group(2));
         }
-      return String.valueOf(total);
+        return String.valueOf(total);
     }
 
     public String part2(String input) {
@@ -35,20 +32,19 @@ public class Day3 extends Day {
         boolean enabled = true;
         int total = 0;
 
-        while(matcher.find()){
-            if (matcher.group().startsWith("mul")){
-                if (enabled){
-                    int sum  =  Integer.parseInt(matcher.group(1)) * Integer.parseInt(matcher.group(2));
-                    total += sum;
+        while (matcher.find()) {
+            if (matcher.group().startsWith("mul")) {
+                if (enabled) {
+                    total += Integer.parseInt(matcher.group(1)) * Integer.parseInt(matcher.group(2));
                 }
             } else if (matcher.group().equals("don't()")) {
                 enabled = false;
 
-            }  else if (matcher.group().equals("do()")) {
+            } else if (matcher.group().equals("do()")) {
                 enabled = true;
             }
         }
-       return String.valueOf(total);
+        return String.valueOf(total);
     }
-    
+
 }
