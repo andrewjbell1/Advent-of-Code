@@ -19,6 +19,19 @@ public abstract class Day {
         return Arrays.asList(input.split(System.lineSeparator()));
     }
 
+    public char[][] asMatrix(String input) {
+        String[] lines = input.split(System.lineSeparator());
+
+        char[][] matrix = new char[lines.length][lines[0].length()];
+
+        for (int y = 0; y < lines.length; y++) {
+            for (int x = 0; x < lines[0].length(); x++) {
+                matrix[y][x] = lines[y].charAt(x);
+            }
+        }
+        return matrix;
+    }
+
     public String readInput() throws IOException, URISyntaxException {
         return readFile("day%s/input.txt".formatted(day));
     }
@@ -72,5 +85,22 @@ public abstract class Day {
     public abstract String part1(String input);
 
     public abstract String part2(String input);
+
+    public class Tuple<X, Y> {
+        public final X x;
+        public final Y y;
+        public Tuple(X x, Y y) {
+            this.x = x;
+            this.y = y;
+        }
+
+        @Override
+        public String toString() {
+            return "Tuple{" +
+                    "x=" + x +
+                    ", y=" + y +
+                    '}';
+        }
+    }
 
 }
