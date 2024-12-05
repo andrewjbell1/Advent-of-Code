@@ -59,7 +59,7 @@ public class Day5 extends Day {
         return String.valueOf(total);
     }
 
-    public Integer orderAndGetMiddle(List<Integer> line, List<Tuple<Integer, Integer>> rules){
+    private Integer orderAndGetMiddle(List<Integer> line, List<Tuple<Integer, Integer>> rules){
         int swapMade = 0;
         while(!isValid(line, rules)) {
             swapMade++;
@@ -72,18 +72,14 @@ public class Day5 extends Day {
         else return 0;
     }
 
-    public List<Integer> attemptOrder(List<Integer> line, List<Tuple<Integer, Integer>> rules){
+    private List<Integer> attemptOrder(List<Integer> line, List<Tuple<Integer, Integer>> rules){
         boolean ruleSuccess;
         ArrayList<Integer> updatedList = new ArrayList<>(line);
         for (Tuple<Integer, Integer> rule : rules){
-            int posX = updatedList.indexOf(rule.x);
-            int posY = updatedList.indexOf(rule.y);
-            ruleSuccess= posX < posY;
+            ruleSuccess= updatedList.indexOf(rule.x) < updatedList.indexOf(rule.y);
             if (!ruleSuccess){
-                int swapX = updatedList.get(posX);
-                int swapY = updatedList.get(posY);
-                updatedList.set(posX, swapY);
-                updatedList.set(posY, swapX);
+                updatedList.remove(rule.x);
+                updatedList.add(updatedList.indexOf(rule.y), rule.x);
             }
         }
         return updatedList;
@@ -96,7 +92,7 @@ public class Day5 extends Day {
                 .toList();
     }
 
-    public boolean isValid(List<Integer> line, List<Tuple<Integer, Integer>> rules){
+    private boolean isValid(List<Integer> line, List<Tuple<Integer, Integer>> rules){
         boolean valid = true;
         for (Tuple<Integer, Integer> rule : rules) {
             if (valid) {
