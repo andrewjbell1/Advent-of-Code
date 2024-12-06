@@ -2,6 +2,34 @@ package andrewjbell1;
 
 public class Day4 extends Day {
 
+    private enum Direction {NORTH, EAST, SOUTH, WEST, NORTHEAST, NORTHWEST, SOUTHEAST, SOUTHWEST}
+
+    private final static String WORD = "XMAS";
+
+    private final static String SEARCH_TERM_1 = """
+            M.S
+            .A.
+            M.S
+            """;
+
+    private final static String SEARCH_TERM_2 = """
+            S.M
+            .A.
+            S.M
+            """;
+
+    private final static String SEARCH_TERM_3 = """
+            S.S
+            .A.
+            M.M
+            """;
+
+    private final static String SEARCH_TERM_4 = """
+            M.M
+            .A.
+            S.S
+            """;
+
     public Day4(int day) {
         super(day);
     }
@@ -32,98 +60,11 @@ public class Day4 extends Day {
         return String.valueOf(matches);
     }
 
-
-    enum Direction {NORTH, EAST, SOUTH, WEST, NORTHEAST, NORTHWEST, SOUTHEAST, SOUTHWEST}
-
-    private final String word = "XMAS";
-
-    private boolean search(char[][] wordSearch, int yPos, int xPos, int wordPos, Direction searchDirection) {
-        if (wordPos == word.length()) {
-            return true;
-        }
-
-        if (yPos < 0 | xPos < 0 | yPos > wordSearch.length - 1 || xPos > wordSearch[0].length - 1) {
-            return false;
-        }
-        int nextWordPos = wordPos + 1;
-        char searchChar = word.charAt(nextWordPos);
-        char currentChar = wordSearch[yPos][xPos];
-        if (currentChar == searchChar) {
-            var nextCoordinates = findNextCoordinates(searchDirection, yPos, xPos);
-            return search(wordSearch, nextCoordinates.y, nextCoordinates.x, nextWordPos, searchDirection);
-        }
-        return false;
-    }
-
-    private Tuple<Integer, Integer> findNextCoordinates(Direction searchDirection, int yPos, int xPos) {
-        int nextYPos = 0;
-        int nextXPos = 0;
-        switch (searchDirection) {
-            case NORTH -> {
-                nextYPos = yPos - 1;
-                nextXPos = xPos;
-            }
-            case EAST -> {
-                nextYPos = yPos;
-                nextXPos = xPos - 1;
-            }
-            case SOUTH -> {
-                nextYPos = yPos + 1;
-                nextXPos = xPos;
-            }
-            case WEST -> {
-                nextYPos = yPos;
-                nextXPos = xPos + 1;
-            }
-            case NORTHEAST -> {
-                nextYPos = yPos - 1;
-                nextXPos = xPos - 1;
-            }
-            case NORTHWEST -> {
-                nextYPos = yPos - 1;
-                nextXPos = xPos + 1;
-            }
-            case SOUTHEAST -> {
-                nextYPos = yPos + 1;
-                nextXPos = xPos - 1;
-            }
-            case SOUTHWEST -> {
-                nextYPos = yPos + 1;
-                nextXPos = xPos + 1;
-            }
-        }
-        return new Tuple<>(nextXPos, nextYPos);
-    }
-
-    String searchTerm1 = """
-            M.S
-            .A.
-            M.S
-            """;
-
-    String searchTerm2 = """
-            S.M
-            .A.
-            S.M
-            """;
-
-    String searchTerm3 = """
-            S.S
-            .A.
-            M.M
-            """;
-
-    String searchTerm4 = """
-            M.M
-            .A.
-            S.S
-            """;
-
     public String part2(String input) {
-        var searchMatrix = asMatrix(searchTerm1);
-        var searchMatrix2 = asMatrix(searchTerm2);
-        var searchMatrix3 = asMatrix(searchTerm3);
-        var searchMatrix4 = asMatrix(searchTerm4);
+        var searchMatrix = asMatrix(SEARCH_TERM_1);
+        var searchMatrix2 = asMatrix(SEARCH_TERM_2);
+        var searchMatrix3 = asMatrix(SEARCH_TERM_3);
+        var searchMatrix4 = asMatrix(SEARCH_TERM_4);
 
         var wordSearch = asMatrix(input);
 
@@ -134,6 +75,38 @@ public class Day4 extends Day {
 
         return String.valueOf(allMatches);
     }
+
+    private boolean search(char[][] wordSearch, int yPos, int xPos, int wordPos, Direction searchDirection) {
+        if (wordPos == WORD.length()) {
+            return true;
+        }
+
+        if (yPos < 0 | xPos < 0 | yPos > wordSearch.length - 1 || xPos > wordSearch[0].length - 1) {
+            return false;
+        }
+        int nextWordPos = wordPos + 1;
+        char searchChar = WORD.charAt(nextWordPos);
+        char currentChar = wordSearch[yPos][xPos];
+        if (currentChar == searchChar) {
+            var nextCoordinates = findNextCoordinates(searchDirection, yPos, xPos);
+            return search(wordSearch, nextCoordinates.y, nextCoordinates.x, nextWordPos, searchDirection);
+        }
+        return false;
+    }
+
+    private Tuple<Integer, Integer> findNextCoordinates(Direction searchDirection, int yPos, int xPos) {
+        return switch (searchDirection) {
+            case NORTH -> new Tuple<>(xPos, yPos - 1);
+            case EAST -> new Tuple<>(xPos - 1, yPos);
+            case SOUTH -> new Tuple<>(xPos, yPos + 1);
+            case WEST -> new Tuple<>(xPos + 1, yPos);
+            case NORTHEAST -> new Tuple<>(xPos - 1, yPos - 1);
+            case NORTHWEST -> new Tuple<>(xPos + 1, yPos - 1);
+            case SOUTHEAST -> new Tuple<>(xPos - 1, yPos + 1);
+            case SOUTHWEST -> new Tuple<>(xPos + 1, yPos + 1);
+        };
+    }
+
 
     private int findMatches(char[][] wordSearch, char[][] searchMatrix) {
         int matches = 0;
@@ -159,7 +132,6 @@ public class Day4 extends Day {
     }
 
     private boolean search(char[][] wordSearch, char[][] searchMatrix, Tuple<Integer, Integer> wordSearchPos, Tuple<Integer, Integer> searchMatrixPos) {
-
         if (searchMatrixPos.y >= searchMatrix.length) {
             System.out.println("Matrix found");
             return true;
