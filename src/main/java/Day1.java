@@ -14,28 +14,24 @@ public class Day1 extends Day {
         day.runPart2();
     }
 
-    public String part1(String input){
+    public long part1(String input){
         List<Integer> leftList =  listSplitAndOrdered(input, 0);
         List<Integer> rightList = listSplitAndOrdered(input, 1);
-
         int total = 0;
         for (int i = 0; i < leftList.size(); i++) {
             total += Math.abs(rightList.get(i) - leftList.get(i));
         }
-        return String.valueOf(total);
+        return total;
     }
 
-    public String part2(String input) {
+    public long part2(String input) {
         List<Integer> leftList =  listSplitAndOrdered(input, 0);
         List<Integer> rightList = listSplitAndOrdered(input, 1);
-
         var map = rightList.stream().collect(Collectors.toMap(Function.identity(), v -> 1, Integer::sum));
-
         int similarityScore = leftList.stream().mapToInt(i ->
          i * map.getOrDefault(i, 0))
                 .reduce(Integer::sum).orElseThrow();
-
-        return String.valueOf(similarityScore);
+        return similarityScore;
     }
 
     private List<Integer> listSplitAndOrdered(String input, int index){

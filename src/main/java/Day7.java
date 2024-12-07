@@ -15,16 +15,16 @@ public class Day7 extends Day {
         day.runPart2();
     }
 
-    public String part1(String input) {
+    public long part1(String input) {
         List<String> lines = splitLines(input);
         var allOperations = getAllOperations(14, false);
-        return String.valueOf(readOperations(lines, allOperations));
+        return readOperations(lines, allOperations);
     }
 
-    public String part2(String input) {
+    public long part2(String input) {
         List<String> lines = splitLines(input);
         var allOperations = getAllOperations(14, true);
-        return String.valueOf(readOperations(lines, allOperations));
+        return readOperations(lines, allOperations);
     }
 
     public HashMap<Integer, Set<String>> getAllOperations(int maxOperators, boolean includeConcat){
@@ -55,7 +55,6 @@ public class Day7 extends Day {
             var lineSplit = line.split(":");
             var answer = Long.parseLong(lineSplit[0]);
             var operators = lineSplit[1].trim().split(" ");
-
             var operations = allOperations.get(operators.length-2);
             for (String operation: operations){
                 long sum = attemptOperation(operation, operators);

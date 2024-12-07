@@ -16,61 +16,60 @@ public class Day6 extends Day {
         day.runPart2();
     }
 
-    public String part1(String input) {
+    public long part1(String input) {
         char[][] grid = asMatrix(input);
         Direction initialDirection = Direction.NORTH;
-        Tuple<Integer, Integer> initialPosition = null;
-
+        Position initialPosition = null;
         List<Direction> directions = List.of(Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST);
 
-        HashMap<Tuple<Integer, Integer>, PositionMetadata> positionMap = new HashMap<>();
+        HashMap<Position, PositionMetadata> positionMap = new HashMap<>();
         for (int y = 0; y < grid.length; y++) {
             for (int x = 0; x < grid[0].length; x++) {
                 char currentChar = grid[y][x];
                 if (Character.toString(currentChar).equals("^")) {
-                    initialPosition = new Tuple<>(x, y);
+                    initialPosition = Position.of(x, y);
                 }
-                positionMap.put(new Tuple<>(x, y), new PositionMetadata(Character.toString(currentChar).equals("#"), Set.of()));
+                positionMap.put(Position.of(x, y), new PositionMetadata(Character.toString(currentChar).equals("#"), Set.of()));
             }
         }
         positionMap.put(initialPosition, new PositionMetadata(false, Set.of(initialDirection)));
 
 
         long count = walkGrid(initialPosition, initialDirection, grid, positionMap, directions).orElseThrow();
-        return String.valueOf(count);
+        return count;
     }
 
-    public Tuple<Integer, Integer> nextCoordinates(Tuple<Integer, Integer> currentPos, Direction direction) {
+    public Position nextCoordinates(Position currentPos, Direction direction) {
         return switch (direction) {
-            case NORTH -> new Tuple<>(currentPos.x, currentPos.y - 1);
-            case EAST -> new Tuple<>(currentPos.x + 1, currentPos.y);
-            case SOUTH -> new Tuple<>(currentPos.x, currentPos.y + 1);
-            case WEST -> new Tuple<>(currentPos.x - 1, currentPos.y);
+            case NORTH -> Position.of(currentPos.x(), currentPos.y() - 1);
+            case EAST -> Position.of(currentPos.x() + 1, currentPos.y());
+            case SOUTH -> Position.of(currentPos.x(), currentPos.y() + 1);
+            case WEST -> Position.of(currentPos.x() - 1, currentPos.y());
             default -> null;
         };
     }
 
-    public String part2(String input) {
+    public long part2(String input) {
         char[][] grid = asMatrix(input);
         Direction initialDirection = Direction.NORTH;
-        Tuple<Integer, Integer> initialPosition = null;
+        Position initialPosition = null;
 
         List<Direction> directions = List.of(Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST);
 
-        HashMap<Tuple<Integer, Integer>, PositionMetadata> positionMap = new HashMap<>();
+        HashMap<Position, PositionMetadata> positionMap = new HashMap<>();
         for (int y = 0; y < grid.length; y++) {
             for (int x = 0; x < grid[0].length; x++) {
                 char currentChar = grid[y][x];
                 if (Character.toString(currentChar).equals("^")) {
-                    initialPosition = new Tuple<>(x, y);
+                    initialPosition = Position.of(x, y);
                 }
-                positionMap.put(new Tuple<>(x, y), new PositionMetadata(Character.toString(currentChar).equals("#"), Set.of()));
+                positionMap.put(Position.of(x, y), new PositionMetadata(Character.toString(currentChar).equals("#"), Set.of()));
             }
         }
 
         positionMap.put(initialPosition, new PositionMetadata(false, Set.of(initialDirection)));
 
-        Tuple<Integer, Integer> finalInitialPosition = initialPosition;
+        Position finalInitialPosition = initialPosition;
 
         var potentialObstacles = positionMap.entrySet().stream().
                 filter(entry -> entry.getKey() != finalInitialPosition && !entry.getValue().obstacle)
@@ -78,25 +77,24 @@ public class Day6 extends Day {
                                 .toList();
 
         int count = 0;
-        for (Tuple<Integer, Integer> potentialObstaclePosition : potentialObstacles) {
-            HashMap<Tuple<Integer, Integer>, PositionMetadata> positionMapWithNewObstacle = new HashMap<>(positionMap);
+        for (Position potentialObstaclePosition : potentialObstacles) {
+            HashMap<Position, PositionMetadata> positionMapWithNewObstacle = new HashMap<>(positionMap);
             positionMapWithNewObstacle.put(potentialObstaclePosition, new PositionMetadata(true, Set.of()));
 
             if (walkGrid(initialPosition, initialDirection, grid, positionMapWithNewObstacle, directions).isEmpty()) {
                 count++;
             }
         }
-
-        return String.valueOf(count);
+        return count;
     }
 
-    private Optional<Long> walkGrid(Tuple<Integer, Integer> position, Direction direction, char[][] grid, HashMap<Tuple<Integer, Integer>, PositionMetadata> positionMap, List<Direction> directions) {
+    private Optional<Long> walkGrid(Position position, Direction direction, char[][] grid, HashMap<Position, PositionMetadata> positionMap, List<Direction> directions) {
         boolean positionInGrid;
         boolean obstacleCreatesLoop = false;
 
         while (true) {
             var possibleNextPos = nextCoordinates(position, direction);
-            positionInGrid = possibleNextPos.x < grid[0].length && possibleNextPos.y < grid.length && possibleNextPos.x >= 0 && possibleNextPos.y >= 0;
+            positionInGrid = possibleNextPos.x() < grid[0].length && possibleNextPos.y() < grid.length && possibleNextPos.x() >= 0 && possibleNextPos.y() >= 0;
             if (!positionInGrid) {
                 break;
             }

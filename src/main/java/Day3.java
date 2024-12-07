@@ -9,22 +9,21 @@ public class Day3 extends Day {
 
     public static void main(String[] args) {
         var day = new Day3(3);
-        // Need to fix Day class to handle a different example input for part 1 + 2
         day.runPart1();
         day.runPart2();
     }
 
-    public String part1(String input) {
+    public long part1(String input) {
         Pattern p = Pattern.compile("mul\\(([0-9]+),([0-9]+)\\)");
         Matcher matcher = p.matcher(input);
         int total = 0;
         while (matcher.find()) {
             total += Integer.parseInt(matcher.group(1)) * Integer.parseInt(matcher.group(2));
         }
-        return String.valueOf(total);
+        return total;
     }
 
-    public String part2(String input) {
+    public long part2(String input) {
         Pattern p = Pattern.compile("do\\(\\)|don't\\(\\)|mul\\(([0-9]+),([0-9]+)\\)");
         Matcher matcher = p.matcher(input);
         boolean enabled = true;
@@ -42,7 +41,7 @@ public class Day3 extends Day {
                 enabled = true;
             }
         }
-        return String.valueOf(total);
+        return total;
     }
 
 }

@@ -13,7 +13,7 @@ public class Day5 extends Day {
         day.runPart2();
     }
 
-    public String part1(String input) {
+    public long part1(String input) {
         var inputLines = splitLines(input);
         var orderingRules = mapRules(inputLines);
         var updateLines = inputLines.stream().filter(line -> line.contains(",")).toList();
@@ -23,7 +23,7 @@ public class Day5 extends Day {
             List<Integer> updateList = Arrays.stream(updateLine.split(",")).map(Integer::parseInt).toList();
 
             var orderingRulesFiltered = orderingRules.stream()
-                    .filter(s -> updateList.contains(s.x) && updateList.contains(s.y))
+                    .filter(s -> updateList.contains(s.x()) && updateList.contains(s.y()))
                     .toList();
 
             int middleNumber = updateList.get(updateList.size() / 2);
@@ -33,10 +33,10 @@ public class Day5 extends Day {
             }
         }
 
-        return String.valueOf(total);
+        return total;
     }
 
-    public String part2(String input) {
+    public long part2(String input) {
         var inputLines = splitLines(input);
         var orderingRules =  mapRules(inputLines);
         var updateLines = inputLines.stream().filter(line -> line.contains(",")).toList();
@@ -46,17 +46,17 @@ public class Day5 extends Day {
             List<Integer> updateList = Arrays.stream(updateLine.split(",")).map(Integer::parseInt).toList();
 
             var orderingRulesFiltered = orderingRules.stream()
-                    .filter(s -> updateList.contains(s.x) && updateList.contains(s.y))
+                    .filter(s -> updateList.contains(s.x()) && updateList.contains(s.y()))
                     .toList();
 
-            Integer middleIfSwapped = orderAndGetMiddle(updateList, orderingRulesFiltered);
+            Integer middleIfSwapped = findMiddleOfOrderedList(updateList, orderingRulesFiltered);
             total += middleIfSwapped;
         }
 
-        return String.valueOf(total);
+        return total;
     }
 
-    private Integer orderAndGetMiddle(List<Integer> line, List<Tuple<Integer, Integer>> rules){
+    private Integer findMiddleOfOrderedList(List<Integer> line, List<Position> rules){
         int swapMade = 0;
         while(!isValid(line, rules)) {
             swapMade++;
@@ -69,31 +69,31 @@ public class Day5 extends Day {
         else return 0;
     }
 
-    private List<Integer> attemptOrder(List<Integer> line, List<Tuple<Integer, Integer>> rules){
+    private List<Integer> attemptOrder(List<Integer> line, List<Position> rules){
         boolean ruleSuccess;
         ArrayList<Integer> updatedList = new ArrayList<>(line);
-        for (Tuple<Integer, Integer> rule : rules){
-            ruleSuccess= updatedList.indexOf(rule.x) < updatedList.indexOf(rule.y);
+        for (Position rule : rules){
+            ruleSuccess= updatedList.indexOf(rule.x()) < updatedList.indexOf(rule.y());
             if (!ruleSuccess){
-                updatedList.remove(rule.x);
-                updatedList.add(updatedList.indexOf(rule.y), rule.x);
+                updatedList.remove(rule.x());
+                updatedList.add(updatedList.indexOf(rule.y()), rule.x());
             }
         }
         return updatedList;
     }
 
-    private List<Tuple<Integer, Integer>> mapRules(List<String> inputLines) {
+    private List<Position> mapRules(List<String> inputLines) {
         return inputLines.stream()
                 .filter(line -> line.contains("|"))
-                .map(s -> new Tuple<>(Integer.parseInt(s.split("\\|")[0]), Integer.parseInt(s.split("\\|")[1])))
+                .map(s -> Position.of(Integer.parseInt(s.split("\\|")[0]), Integer.parseInt(s.split("\\|")[1])))
                 .toList();
     }
 
-    private boolean isValid(List<Integer> line, List<Tuple<Integer, Integer>> rules){
+    private boolean isValid(List<Integer> line, List<Position> rules){
         boolean valid = true;
-        for (Tuple<Integer, Integer> rule : rules) {
+        for (Position rule : rules) {
             if (valid) {
-                valid = line.indexOf(rule.x) < line.indexOf(rule.y);
+                valid = line.indexOf(rule.x()) < line.indexOf(rule.y());
             }
         }
         return valid;

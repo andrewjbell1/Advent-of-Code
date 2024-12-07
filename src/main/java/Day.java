@@ -53,7 +53,7 @@ public abstract class Day {
 
     public void runPart1() {
         InputFiles files = loadFiles();
-        String exampleResult = part1(files.examplePart1);
+        String exampleResult = String.valueOf(part1(files.examplePart1));
         if (!exampleResult.equals(files.examplePart1Result)){
             throw new RuntimeException("Part 1 - Expected: " + files.examplePart1Result + " but got: " + exampleResult);
         }
@@ -63,7 +63,7 @@ public abstract class Day {
 
     public void runPart2() {
         InputFiles files = loadFiles();
-        String exampleResult = part2(files.examplePart2);
+        String exampleResult = String.valueOf(part2(files.examplePart2));
         if (!exampleResult.equals(files.examplePart2Result())){
             throw new RuntimeException("Part 2 - Expected: " + files.examplePart2Result + " but got: " + exampleResult);
         }
@@ -71,11 +71,16 @@ public abstract class Day {
         System.out.println("Part 2: "+ part2(files.testcase));
     }
 
-    public abstract String part1(String input);
+    public abstract long part1(String input);
 
-    public abstract String part2(String input);
+    public abstract long part2(String input);
 
-    public record Position(int x, int y){};
+    public record Position(int x, int y){
+
+        public static Position of(int x, int y){
+            return new Position(x, y);
+        }
+    };
 
     public class Tuple<X, Y> {
         public final X x;
