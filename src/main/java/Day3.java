@@ -1,5 +1,3 @@
-package andrewjbell1;
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -12,7 +10,7 @@ public class Day3 extends Day {
     public static void main(String[] args) {
         var day = new Day3(3);
         // Need to fix Day class to handle a different example input for part 1 + 2
-        //  day.runPart1();
+        day.runPart1();
         day.runPart2();
     }
 

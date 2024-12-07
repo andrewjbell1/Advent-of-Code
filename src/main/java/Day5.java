@@ -1,11 +1,8 @@
-package andrewjbell1;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class Day5 extends Day {
-
     public Day5(int day) {
         super(day);
     }

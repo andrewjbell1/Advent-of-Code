@@ -1,9 +1,4 @@
-package andrewjbell1;
-
 public class Day4 extends Day {
-
-
-
     private final static String WORD = "XMAS";
 
     private final static String SEARCH_TERM_1 = """
@@ -36,7 +31,7 @@ public class Day4 extends Day {
 
     public static void main(String[] args) {
         var day = new Day4(4);
-        //  day.runPart1();
+        day.runPart1();
         day.runPart2();
     }
 
@@ -81,7 +76,7 @@ public class Day4 extends Day {
             return true;
         }
 
-        if (yPos < 0 | xPos < 0 | yPos > wordSearch.length - 1 || xPos > wordSearch[0].length - 1) {
+        if (yPos < 0 || xPos < 0 || yPos > wordSearch.length - 1 || xPos > wordSearch[0].length - 1) {
             return false;
         }
         int nextWordPos = wordPos + 1;

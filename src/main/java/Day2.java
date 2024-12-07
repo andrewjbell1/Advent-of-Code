@@ -1,5 +1,3 @@
-package andrewjbell1;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -55,7 +53,7 @@ public class Day2 extends Day {
     }
 
     private boolean isReportSafeWithDampener(String[] levels){
-        for (int i =0 ; i<levels.length; i++){
+        for (int i =0 ; i <levels.length; i++){
             var newList = new ArrayList<>(List.of(levels));
             newList.remove(i);
             var levelsWithOneRemoved = newList.toArray(String[]::new);

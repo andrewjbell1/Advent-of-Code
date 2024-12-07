@@ -1,5 +1,3 @@
-package andrewjbell1;
-
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -26,30 +24,26 @@ public class Day7 extends Day {
     public String part2(String input) {
         List<String> lines = splitLines(input);
         var allOperations = getAllOperations(14, true);
-
         return String.valueOf(readOperations(lines, allOperations));
     }
 
     public HashMap<Integer, Set<String>> getAllOperations(int maxOperators, boolean includeConcat){
         HashMap<Integer, Set<String>> allOps = new HashMap<>();
-
         var initialSet = includeConcat ? Set.of("+", "*", "|") : Set.of("+", "*");
         allOps.put(0, initialSet);
-
         for (int i = 1; i < maxOperators; i++) {
             allOps.put(i, getPosOperations(allOps.get(i-1), includeConcat));
         }
         return allOps;
     }
 
-    public Set<String> getPosOperations(Set<String> operationsMinus1, boolean includeConcat){
+    public Set<String> getPosOperations(Set<String> oldOperations, boolean includeConcat){
         Set<String> operationSet = new HashSet<>();
-
-        for (String opLess : operationsMinus1){
-            operationSet.add(opLess +"+");
-            operationSet.add(opLess + "*");
+        for (String oldOp : oldOperations){
+            operationSet.add(oldOp + "+");
+            operationSet.add(oldOp + "*");
             if (includeConcat){
-                operationSet.add(opLess+"|");
+                operationSet.add(oldOp+ "|");
             }
         }
         return operationSet;
@@ -60,29 +54,11 @@ public class Day7 extends Day {
         for(String line: lines){
             var lineSplit = line.split(":");
             var answer = Long.parseLong(lineSplit[0]);
-            var operatorLine = lineSplit[1];
-
-            var operators = operatorLine.trim().split(" ");
+            var operators = lineSplit[1].trim().split(" ");
 
             var operations = allOperations.get(operators.length-2);
             for (String operation: operations){
-                long sum = Long.parseLong(operators[0]);
-                var operationsSplit = operation.split("");
-                for (int i = 0; i < operators.length-1; i++) {
-                    var val2 = Integer.parseInt(operators[i+1]);
-                    var op = operationsSplit[i];
-
-                    if (op.equals("*")){
-                        sum = sum * val2;
-                    }
-                    if (op.equals("+")){
-                        sum = sum + val2;
-                    }
-                    if (op.equals("|")){
-                        sum =Long.parseLong(String.valueOf(sum) + val2);
-                    }
-
-                }
+                long sum = attemptOperation(operation, operators);
                 if (sum == answer){
                     calibrationTotal+=sum;
                     break;
@@ -90,6 +66,21 @@ public class Day7 extends Day {
             }
         }
         return calibrationTotal;
+    }
+
+    private static long attemptOperation(String operation, String[] operators) {
+        long sum = Long.parseLong(operators[0]);
+        char[] operationsSplit = operation.toCharArray();
+        for (int i = 0; i < operators.length-1; i++) {
+            var val = Integer.parseInt(operators[i+1]);
+            var op = operationsSplit[i];
+            switch (op){
+                case '*' -> sum *= val;
+                case '+' -> sum += val;
+                case '|' -> sum = Long.parseLong(String.valueOf(sum) + val);
+            }
+        }
+        return sum;
     }
 
 }

@@ -1,5 +1,3 @@
-package andrewjbell1;
-
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
@@ -32,31 +30,20 @@ public abstract class Day {
         return matrix;
     }
 
-    public String readInput() throws IOException, URISyntaxException {
-        return readFile("day%s/input.txt".formatted(day));
-    }
-
-    public String readExample() throws IOException, URISyntaxException {
-        return readFile("day%s/example.txt".formatted(day));
-    }
-
-    public String readExamplePart1Result() throws IOException, URISyntaxException {
-        return readFile("day%s/example_part1_result.txt".formatted(day));
-    }
-
-    public String readExamplePart2Result() throws IOException, URISyntaxException {
-        return readFile("day%s/example_part2_result.txt".formatted(day));
-    }
-
     public String readFile(String name) throws IOException, URISyntaxException {
         return Files.readString(Paths.get(Objects.requireNonNull(this.getClass().getClassLoader().getResource (name)).toURI()));
     }
 
-    public record InputFiles (String testcase, String example, String examplePart1Result, String examplePart2Result){}
+    public record InputFiles (String testcase, String examplePart1, String examplePart2, String examplePart1Result, String examplePart2Result){}
 
     public InputFiles loadFiles(){
         try {
-            return new InputFiles(readInput(), readExample(), readExamplePart1Result(), readExamplePart2Result());
+            return new InputFiles(
+                    readFile("day%s/input.txt".formatted(day)),
+                    readFile("day%s/example_part1.txt".formatted(day)),
+                    readFile("day%s/example_part2.txt".formatted(day)),
+                    readFile("day%s/example_part1_result.txt".formatted(day)),
+                    readFile("day%s/example_part2_result.txt".formatted(day)));
         }
         catch (IOException | URISyntaxException exception){
             throw new RuntimeException("Failed to load files", exception);
@@ -66,7 +53,7 @@ public abstract class Day {
 
     public void runPart1() {
         InputFiles files = loadFiles();
-        String exampleResult = part1(files.example);
+        String exampleResult = part1(files.examplePart1);
         if (!exampleResult.equals(files.examplePart1Result)){
             throw new RuntimeException("Part 1 - Expected: " + files.examplePart1Result + " but got: " + exampleResult);
         }
@@ -76,7 +63,7 @@ public abstract class Day {
 
     public void runPart2() {
         InputFiles files = loadFiles();
-        String exampleResult = part2(files.example);
+        String exampleResult = part2(files.examplePart2);
         if (!exampleResult.equals(files.examplePart2Result())){
             throw new RuntimeException("Part 2 - Expected: " + files.examplePart2Result + " but got: " + exampleResult);
         }
@@ -87,6 +74,8 @@ public abstract class Day {
     public abstract String part1(String input);
 
     public abstract String part2(String input);
+
+    public record Position(int x, int y){};
 
     public class Tuple<X, Y> {
         public final X x;

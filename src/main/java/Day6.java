@@ -1,5 +1,3 @@
-package andrewjbell1;
-
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -8,7 +6,6 @@ import java.util.Optional;
 import java.util.Set;
 
 public class Day6 extends Day {
-
     public Day6(int day) {
         super(day);
     }
@@ -18,7 +15,6 @@ public class Day6 extends Day {
         day.runPart1();
         day.runPart2();
     }
-
 
     public String part1(String input) {
         char[][] grid = asMatrix(input);
