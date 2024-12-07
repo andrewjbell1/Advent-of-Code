@@ -70,6 +70,7 @@ public abstract class Day {
         if (!exampleResult.equals(files.examplePart1Result)){
             throw new RuntimeException("Part 1 - Expected: " + files.examplePart1Result + " but got: " + exampleResult);
         }
+        System.out.println("Part 1: example is correct");
         System.out.println("Part 1: " + part1(files.testcase));
     }
 
@@ -79,6 +80,7 @@ public abstract class Day {
         if (!exampleResult.equals(files.examplePart2Result())){
             throw new RuntimeException("Part 2 - Expected: " + files.examplePart2Result + " but got: " + exampleResult);
         }
+        System.out.println("Part 2: example is correct");
         System.out.println("Part 2: "+ part2(files.testcase));
     }
 
@@ -101,6 +103,24 @@ public abstract class Day {
                     ", y=" + y +
                     '}';
         }
+
+        @Override
+        public boolean equals(Object object) {
+            if (this == object) return true;
+            if (object == null || getClass() != object.getClass()) return false;
+
+            Tuple<?, ?> tuple = (Tuple<?, ?>) object;
+            return Objects.equals(x, tuple.x) && Objects.equals(y, tuple.y);
+        }
+
+        @Override
+        public int hashCode() {
+            int result = Objects.hashCode(x);
+            result = 31 * result + Objects.hashCode(y);
+            return result;
+        }
     }
+
+    public enum Direction {NORTH, EAST, SOUTH, WEST, NORTHEAST, NORTHWEST, SOUTHEAST, SOUTHWEST}
 
 }

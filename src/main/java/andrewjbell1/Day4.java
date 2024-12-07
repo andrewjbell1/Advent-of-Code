@@ -2,7 +2,7 @@ package andrewjbell1;
 
 public class Day4 extends Day {
 
-    private enum Direction {NORTH, EAST, SOUTH, WEST, NORTHEAST, NORTHWEST, SOUTHEAST, SOUTHWEST}
+
 
     private final static String WORD = "XMAS";
 
