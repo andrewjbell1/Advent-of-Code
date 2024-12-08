@@ -5,7 +5,7 @@ public class Day8 extends Day{
     public static void main(String[] args) {
         Day8 day8 = new Day8(8);
         day8.runPart1();
-       // day8.runPart2();
+        day8.runPart2();
     }
 
     public Day8(int day) {
@@ -22,7 +22,6 @@ public class Day8 extends Day{
                 if (grid[y][x] !='.'){
                     var antPosition = Position.of(x, y);
                     var antenna = grid[y][x];
-                    // scan grid for position of antenna add antinode
                     scanForMatchingAntenna(antPosition, antenna, grid, antinodePositions);
                 }
 
@@ -42,8 +41,7 @@ public class Day8 extends Day{
                     Position positionDiff = antPosition.subtract(currentPosition);
                     Position antiNodePosition = currentPosition.subtract(positionDiff);
                     if (currentPosition.x() != antPosition.x() && currentPosition.y() != antPosition.y()) {
-                        // find diff between current position and antPosition, add to antinode map
-                        if (antiNodePosition.y() < grid.length && currentPosition.x() < grid[0].length && antiNodePosition.y() >= 0 && antiNodePosition.x() >= 0) {
+                        if (antiNodePosition.y() < grid.length && antiNodePosition.x() < grid[0].length && antiNodePosition.y() >= 0 && antiNodePosition.x() >= 0) {
                             System.out.println("Adding antinode at: " + antiNodePosition + " for antenna: " + antenna + " at position " + antPosition + " based on matching ant at: " + currentPosition);
                             antinodePositions.add(antiNodePosition);
                         }
