@@ -80,40 +80,20 @@ public abstract class Day {
         public static Position of(int x, int y){
             return new Position(x, y);
         }
+
+        public Position subtract(Position positionToSubtract){
+            return Position.of(this.x - positionToSubtract.x, this.y - positionToSubtract.y);
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            Position position = (Position) o;
+
+            if (x != position.x) return false;
+            return y == position.y;
+        }
     };
 
-    public class Tuple<X, Y> {
-        public final X x;
-        public final Y y;
-        public Tuple(X x, Y y) {
-            this.x = x;
-            this.y = y;
-        }
-
-        @Override
-        public String toString() {
-            return "Tuple{" +
-                    "x=" + x +
-                    ", y=" + y +
-                    '}';
-        }
-
-        @Override
-        public boolean equals(Object object) {
-            if (this == object) return true;
-            if (object == null || getClass() != object.getClass()) return false;
-
-            Tuple<?, ?> tuple = (Tuple<?, ?>) object;
-            return Objects.equals(x, tuple.x) && Objects.equals(y, tuple.y);
-        }
-
-        @Override
-        public int hashCode() {
-            int result = Objects.hashCode(x);
-            result = 31 * result + Objects.hashCode(y);
-            return result;
-        }
-    }
 
     public enum Direction {NORTH, EAST, SOUTH, WEST, NORTHEAST, NORTHWEST, SOUTHEAST, SOUTHWEST}
 
