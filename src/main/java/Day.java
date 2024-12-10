@@ -85,6 +85,20 @@ public abstract class Day {
             return Position.of(this.x - positionToSubtract.x, this.y - positionToSubtract.y);
         }
 
+        public boolean inGrid(char[][] grid){
+            return this.y() < grid.length && this.x() < grid[0].length && this.y() >= 0 && this.x() >= 0;
+        }
+
+        public Position nextPosition(Direction direction) {
+            return switch (direction) {
+                case NORTH -> Position.of(this.x(), this.y() - 1);
+                case EAST -> Position.of(this.x() + 1, this.y());
+                case SOUTH -> Position.of(this.x(), this.y() + 1);
+                case WEST -> Position.of(this.x() - 1, this.y());
+                default -> throw new IllegalArgumentException("Not implemented");
+            };
+        }
+
         @Override
         public boolean equals(Object o) {
             Position position = (Position) o;
