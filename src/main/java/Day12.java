@@ -1,5 +1,6 @@
-import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 
 public class Day12 extends Day {
 
@@ -33,15 +34,14 @@ public class Day12 extends Day {
     }
 
     public long calculatePerimeter(List<Position> region){
-        AtomicInteger perimeter = new AtomicInteger();
+        int perimeter = 0;
         for (Position position: region){
-            region.stream().filter(p -> p.equals(position.nextPosition(Direction.NORTH))).findFirst().ifPresentOrElse(p -> {}, perimeter::incrementAndGet);
-            region.stream().filter(p -> p.equals(position.nextPosition(Direction.EAST))).findFirst().ifPresentOrElse(p -> {}, perimeter::incrementAndGet);
-            region.stream().filter(p -> p.equals(position.nextPosition(Direction.SOUTH))).findFirst().ifPresentOrElse(p -> {}, perimeter::incrementAndGet);
-            region.stream().filter(p -> p.equals(position.nextPosition(Direction.WEST))).findFirst().ifPresentOrElse(p -> {}, perimeter::incrementAndGet);
+            perimeter+=region.stream().filter(p -> p.equals(position.nextPosition(Direction.NORTH))).findFirst().map(p->0).orElse(1);
+            perimeter+=region.stream().filter(p -> p.equals(position.nextPosition(Direction.EAST))).findFirst().map(p->0).orElse(1);
+            perimeter+=region.stream().filter(p -> p.equals(position.nextPosition(Direction.SOUTH))).findFirst().map(p->0).orElse(1);
+            perimeter+=region.stream().filter(p -> p.equals(position.nextPosition(Direction.WEST))).findFirst().map(p->0).orElse(1);
         }
-
-        return perimeter.get();
+        return perimeter;
     }
 
     public ArrayList<Position> search(Position position, char[][] grid, char target, ArrayList<Position> region, HashSet<Position> visited){
