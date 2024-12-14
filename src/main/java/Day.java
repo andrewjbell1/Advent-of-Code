@@ -3,6 +3,7 @@ import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Objects;
 
@@ -109,6 +110,37 @@ public abstract class Day {
     };
 
 
-    public enum Direction {NORTH, EAST, SOUTH, WEST, NORTHEAST, NORTHWEST, SOUTHEAST, SOUTHWEST}
+    public enum Direction {NORTH, EAST, SOUTH, WEST, NORTHEAST, NORTHWEST, SOUTHEAST, SOUTHWEST;
+
+        public Direction opposite(){
+            return switch (this) {
+                case NORTH -> SOUTH;
+                case EAST -> WEST;
+                case SOUTH -> NORTH;
+                case WEST -> EAST;
+                default -> throw new IllegalArgumentException("Not implemented");
+            };
+        }
+
+        public Direction rotateClockwise(){
+            return switch (this) {
+                case NORTH -> EAST;
+                case EAST -> SOUTH;
+                case SOUTH -> WEST;
+                case WEST -> NORTH;
+                default -> throw new IllegalArgumentException("Not implemented");
+            };
+        }
+
+        public Direction rotateAntiClockwise() {
+            return switch (this) {
+                case NORTH -> WEST;
+                case WEST -> SOUTH;
+                case SOUTH -> EAST;
+                case EAST -> NORTH;
+                default -> throw new IllegalArgumentException("Not implemented");
+            };
+        }
+    }
 
 }
