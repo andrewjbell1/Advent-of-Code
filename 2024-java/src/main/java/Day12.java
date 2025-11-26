@@ -68,7 +68,24 @@ public class Day12 extends Day {
     }
 
     public long part2(String input) {
+        var grid = asMatrix(input);
+
+        HashSet<Position> visited = new HashSet<>();
+        long totalCost = 0;
+        for (int y = 0; y < grid.length; y++) {
+            for (int x = 0; x < grid[0].length; x++) {
+                var val = grid[y][x];
+                if (!visited.contains(Position.of(x, y))){
+                    List<Position> positions = search(Position.of(x, y), grid, val, new ArrayList<>(), visited);
+                    long perimeter = calculatePerimeter(positions);
+                    totalCost += perimeter * positions.size();
+                }
+            }
+        }
         return 0;
     }
+
+
+    
 
 }
