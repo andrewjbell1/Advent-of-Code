@@ -1,7 +1,7 @@
 package day01
 
 import println
-import readInput
+import readInputOfLines
 import kotlin.collections.forEach
 
 fun main() {
@@ -51,8 +51,8 @@ fun main() {
         return zeros;
     }
 
-    val example = readInput("day01/example")
-    val input = readInput("day01/input")
+    val example = readInputOfLines("day01/example")
+    val input = readInputOfLines("day01/input")
 
     check(part1(example) == 3)
     "Part 1:".println()
