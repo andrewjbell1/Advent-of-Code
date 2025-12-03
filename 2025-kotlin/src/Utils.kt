@@ -9,9 +9,10 @@ fun Any?.println() = println(this)
 fun <E> Iterable<E>.indexesOf(predicate: (E) -> Boolean) = mapIndexedNotNull{ index, elem -> index.takeIf{ predicate(elem) } }
 
 
-fun check(actual: Any, expected: Int) {
+fun check(actual: Any, expected: Any) {
     if (actual != expected) {
         println("Failed: Actual: $actual, Expected: $expected")
         throw AssertionError("Failed: Actual: $actual, Expected: $expected")
     }
 }
+

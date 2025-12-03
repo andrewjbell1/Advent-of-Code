@@ -22,8 +22,27 @@ fun main() {
         }.sum()
     }
 
-    fun part2(input: List<String>): Int {
-        return 0
+    fun part2(input: List<String>): Long {
+        return input.map { line ->
+            val digitList = line.trim().split("")
+                .filter { it.isNotEmpty() }
+                .map { it.toInt() }.toList()
+
+            val max = digitList.subList(0, digitList.size - 12).max()
+
+            val joltageIndex = setOf(digitList.indexOf(max)).toSortedSet()
+
+            // find the next highest 12 numbers
+            digitList.indexesOf { it == max }
+                .flatMap { iMax ->
+                    val subList = digitList.subList(iMax + 1, digitList.size)
+
+                    //return index
+                }
+                .map { "$max$it".toLong() }
+                .max()
+
+        }.sum()
     }
 
     val example = readInputOfLines("day3/example")
@@ -34,8 +53,8 @@ fun main() {
     "Part 1:".println()
     part1(input).println()
 
-//    check(part2(example),0)
-//    println(part2(example))
-//    "Part 2:".println()
-//    part2(input).println()
+    check(part2(example),3121910778619)
+    println(part2(example))
+    "Part 2:".println()
+    part2(input).println()
 }
