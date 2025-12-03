@@ -5,3 +5,13 @@ fun readInputOfLines(name: String) = Path("2025-kotlin/src/$name.txt").readText(
 fun readInputOfCommaSeperated(name: String) = Path("2025-kotlin/src/$name.txt").readText().trim().split(",")
 
 fun Any?.println() = println(this)
+
+fun <E> Iterable<E>.indexesOf(predicate: (E) -> Boolean) = mapIndexedNotNull{ index, elem -> index.takeIf{ predicate(elem) } }
+
+
+fun check(actual: Any, expected: Int) {
+    if (actual != expected) {
+        println("Failed: Actual: $actual, Expected: $expected")
+        throw AssertionError("Failed: Actual: $actual, Expected: $expected")
+    }
+}
