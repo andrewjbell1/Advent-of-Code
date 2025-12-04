@@ -1,5 +1,6 @@
 package day3
 
+import benchmark
 import check
 import indexesOf
 import println
@@ -22,20 +23,43 @@ fun main() {
         }.sum()
     }
 
-    fun part2(input: List<String>): Int {
-        return 0
+    fun part2(input: List<String>): Long {
+        return input.sumOf { line ->
+            var remainingDigits = line.trim().split("")
+                .filter { it.isNotEmpty() }
+                .map { it.toInt() }.toList()
+
+            var digitsRequiredCount = 11
+            var maxFromDigits: List<Int>
+            var joltage = ""
+            while (digitsRequiredCount >= 0) {
+                maxFromDigits = remainingDigits.subList(0, remainingDigits.size - digitsRequiredCount)
+                var maxIndex = 0
+                for (i in maxFromDigits.indices) {
+                    if (maxFromDigits[i] > maxFromDigits[maxIndex]) {
+                        maxIndex = i
+                    }
+                }
+                joltage += maxFromDigits[maxIndex].toString()
+                remainingDigits = remainingDigits.subList(maxIndex + 1, remainingDigits.size)
+                digitsRequiredCount--
+            }
+            joltage.toLong()
+        }
+
     }
 
     val example = readInputOfLines("day3/example")
     val input = readInputOfLines("day3/input")
 
-
     check(part1(example), 357)
     "Part 1:".println()
     part1(input).println()
+    benchmark(10) { part1(input) } //5.17ms
 
-//    check(part2(example),0)
-//    println(part2(example))
-//    "Part 2:".println()
-//    part2(input).println()
+    check(part2(example), 3121910778619)
+    println(part2(example))
+    "Part 2:".println()
+    part2(input).println()
+    benchmark(10) { part2(input) } //3.43ms
 }
