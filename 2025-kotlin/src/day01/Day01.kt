@@ -1,5 +1,6 @@
 package day01
 
+import benchmark
 import println
 import readInputOfLines
 import kotlin.collections.forEach
@@ -57,8 +58,10 @@ fun main() {
     check(part1(example) == 3)
     "Part 1:".println()
     part1(input).println()
+    benchmark(10) { part1(input) }
 
     check(part2(example) == 6)
     "Part 2:".println()
     part2(input).println()
+    benchmark(10) { part2(input) }
 }

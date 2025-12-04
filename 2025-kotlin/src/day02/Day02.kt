@@ -1,5 +1,6 @@
-package day01
+package day02
 
+import benchmark
 import println
 import readInputOfCommaSeperated
 import readInputOfLines
@@ -13,12 +14,10 @@ fun main() {
                 .filter { it.toString().length.mod(2) == 0 }
                 .forEach {
                     val left = it.toString().subSequence(0, it.toString().length.div(2)).toString().toLong()
-                    val right =
-                        it.toString().subSequence(it.toString().length.div(2), it.toString().length).toString().toLong()
+                    val right = it.toString().subSequence(it.toString().length.div(2), it.toString().length).toString().toLong()
                     if (left == right) total += it
                 }
         }
-
         return total
     }
 
@@ -52,9 +51,13 @@ fun main() {
     "Part 1:".println()
     part1(input).println()
 
+    benchmark (1000){ part1(input) } //220.45ms
+
     check(part2(example) == 4174379265L)
     println(part2(example))
 
     "Part 2:".println()
     part2(input).println()
+    benchmark(1000) { part2(input) } //367.96ms
+
 }
