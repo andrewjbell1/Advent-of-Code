@@ -2,7 +2,7 @@ package dayX
 
 import check
 import println
-import readInputOfCommaSeperated
+import readInputOfCommaSeparated
 
 fun main() {
     fun part1(input: List<String>): Int {
@@ -15,8 +15,8 @@ fun main() {
     return 0
     }
 
-    val example = readInputOfCommaSeperated("dayX/example")
-    val input = readInputOfCommaSeperated("dayX/input")
+    val example = readInputOfCommaSeparated("dayX/example")
+    val input = readInputOfCommaSeparated("dayX/input")
 
 
     check(part1(example),0)
