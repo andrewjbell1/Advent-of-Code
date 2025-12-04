@@ -2,8 +2,7 @@ package day02
 
 import benchmark
 import println
-import readInputOfCommaSeperated
-import readInputOfLines
+import readInputOfCommaSeparated
 
 fun main() {
     fun part1(input: List<String>): Long {
@@ -44,8 +43,8 @@ fun main() {
         }.filter { it.hasDuplicates()}.sum()
     }
 
-    val example = readInputOfCommaSeperated("day02/example")
-    val input = readInputOfCommaSeperated("day02/input")
+    val example = readInputOfCommaSeparated("day02/example")
+    val input = readInputOfCommaSeparated("day02/input")
 
     check(part1(example) == 1227775554L)
     "Part 1:".println()
