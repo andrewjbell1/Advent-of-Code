@@ -6,6 +6,8 @@ import kotlin.time.measureTime
 fun readInputOfLines(name: String) = Path("2025-kotlin/src/$name.txt").readText().trim().lines()
 fun readInputOfCommaSeparated(name: String) = Path("2025-kotlin/src/$name.txt").readText().trim().split(",")
 
+fun List<String>.partitionOnEmptyLine(): Pair<List<String>, List<String>> = this.subList(0,this.indexOf("")) to this.subList(this.indexOf("")+1, this.size)
+
 fun Any?.println() = println(this)
 
 fun <E> Iterable<E>.indexesOf(predicate: (E) -> Boolean) = mapIndexedNotNull { index, elem -> index.takeIf { predicate(elem) } }
@@ -26,7 +28,7 @@ fun check(actual: Any, expected: Any) {
 // Grid functions
 // grid[row][column]
 fun List<String>.toGrid(): Array<CharArray> {
-    return Array(this.size) { i -> this[i].toCharArray() }
+    return Array(this.size) { this[it].toCharArray() }
 }
 
 fun Array<CharArray>.get(pos: Pair<Int, Int>): Char = this[pos.row()][pos.col()]
