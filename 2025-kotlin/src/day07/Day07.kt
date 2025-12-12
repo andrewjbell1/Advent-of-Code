@@ -1,4 +1,4 @@
-package day06
+package day07
 
 import benchmark
 import check
@@ -10,57 +10,56 @@ import toGrid
 
 fun main() {
 
-    fun part1(input: List<String>): Long {
-        val listOfList = input.map { it.trim().split("\\s+".toRegex()) }
-        val modifierLine = listOfList[listOfList.size-1]
-        val numList = listOfList.subList(0, listOfList.size-1)
+    fun part1(input: List<String>): Int {
 
-       return (0..<numList[0].size).sumOf { charCount ->
-            val digitsToAccumulate = (0..<numList.size).map { lineCount -> numList[lineCount][charCount]}
-            val modifier = modifierLine[charCount]
-            val initial = if (modifier=="*") 1L else 0L
-           digitsToAccumulate.fold(initial) { acc, num ->
-                if (modifier == "*") acc * num.toLong()
-                else acc + num.toLong()
+        val startingPoint = input[0].indexOf("S")
+        val lines = input.subList(1, input.size)
+
+       return lines.fold(Pair(0, setOf(startingPoint))){acc, line ->
+            val mutableSet = acc.second.toMutableSet()
+            var split= acc.first
+            acc.second.forEach { beamIndex ->
+                if (line[beamIndex] == '^'){
+                    mutableSet.add(beamIndex-1)
+                    mutableSet.add(beamIndex+1)
+                    mutableSet.remove(beamIndex)
+                    split++
+
+                }
             }
-        }
+            Pair(split, mutableSet)
+
+        }.first
     }
 
-
-    fun part2(input: List<String>): Long {
-        val modifierLine = input[input.size-1].trim().split("\\s+".toRegex())
-        val rotatedGrid = input.subList(0, input.size-1).toGrid().rotateAnticlockwise()
-        val listOfRows = rotatedGrid.map { row -> String(row).trim() }
-
-        var sum = 0L
-        var rowsRemaining = listOfRows
-        var count = 0
-        while (rowsRemaining.isNotEmpty()){
-            val partitioned = rowsRemaining.partitionOnEmptyLine()
-            rowsRemaining = partitioned.second
-            val modifier =modifierLine.reversed()[count]
-            val startingAcc = if (modifier=="*") 1L else 0L
-            val rowSum = partitioned.first.fold(startingAcc) { acc, num ->
-                if (modifier == "*") acc * num.toLong()
-                else acc + num.toLong()
-            }
-            sum+=rowSum
-            count++
+    fun recursive(count: Int, beamIndex: Int, inputList: List<String>, inputLineIndex: Int): Int{
+        if (inputLineIndex>inputList.size-1){
+            return count+1
         }
-        return sum
+        val line = inputList[inputLineIndex]
+        if (line[beamIndex] == '^'){
+            return recursive(count, beamIndex-1, inputList, inputLineIndex+1)+ recursive(count, beamIndex+1, inputList, inputLineIndex+1, memo)
+        }
+        return recursive(count, beamIndex, inputList, inputLineIndex +1)
     }
 
-    val example = readInputOfLines("day06/example")
-    val input = readInputOfLines("day06/input")
+    fun part2(input: List<String>): Int {
+        val startingPoint = input[0].indexOf("S")
+        val lines = input.subList(1, input.size)
+        return recursive(0, startingPoint, lines, 0)
+    }
 
-    check(part1(example),4277556L)
+    val example = readInputOfLines("day07/example")
+    val input = readInputOfLines("day07/input")
+
+    check(part1(example),21)
     "Part 1:".println()
     part1(input).println()
-    benchmark(1000) { part1(input)} // 370.691us
+    benchmark(1000) { part1(input)} // 197.978us
 
     "Part 2:".println()
-    check(part2(example),3263827L)
-    part2(input).println()
-    benchmark(1000) { part2(input)} // 16.126354ms
+    check(part2(example),40)
+//    part2(input).println()
+ //   benchmark(1000) { part2(input)} // 16.126354ms
 
 }
