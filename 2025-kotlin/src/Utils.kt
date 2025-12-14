@@ -4,6 +4,9 @@ import kotlin.text.toCharArray
 import kotlin.time.Duration
 import kotlin.time.measureTime
 
+typealias Grid = Array<CharArray>
+typealias Pos = Pair<Int, Int>
+
 fun readInputOfLines(name: String) = Path("2025-kotlin/src/$name.txt").readText().trim().lines()
 fun readInputOfCommaSeparated(name: String) = Path("2025-kotlin/src/$name.txt").readText().trim().split(",")
 
@@ -32,16 +35,16 @@ fun check(actual: Any, expected: Any) {
 
 // Grid functions
 // grid[row][column]
-fun List<String>.toGrid(): Array<CharArray> {
+fun List<String>.toGrid(): Grid {
     return Array(this.size) { this[it].toCharArray() }
 }
 
-fun Array<CharArray>.get(pos: Pair<Int, Int>): Char = this[pos.row()][pos.col()]
+fun Grid.get(pos: Pos): Char = this[pos.row()][pos.col()]
 
 
 // I am sure there is a much nicer way of doing this
-fun Array<CharArray>.findLocationsOf(target: Char): List<Pair<Int, Int>> {
-    val locations = mutableListOf<Pair<Int, Int>>()
+fun Grid.findLocationsOf(target: Char): List<Pos> {
+    val locations = mutableListOf<Pos>()
     for (r in 0 until this.rowCount) {
         for (c in 0 until this.colCount) {
             if (this[r][c] == target) {
@@ -52,11 +55,11 @@ fun Array<CharArray>.findLocationsOf(target: Char): List<Pair<Int, Int>> {
     return locations
 }
 
-fun Array<CharArray>.updatePos(posToUpdate: Pair<Int, Int>, newValue: Char) {
+fun Grid.updatePos(posToUpdate: Pos, newValue: Char) {
     this[posToUpdate.row()][posToUpdate.col()] = newValue
 }
 
-fun List<Pair<Int, Int>>.printPosToGrid() {
+fun List<Pos>.printPosToGrid() {
     val posSet = this.toSet()
     (0..posSet.maxOf { it.row() }).forEach { r ->
         (0..posSet.maxOf { it.col() }).forEach { c ->
@@ -67,14 +70,14 @@ fun List<Pair<Int, Int>>.printPosToGrid() {
     }
 }
 
-fun Array<CharArray>.print() {
+fun Grid.print() {
     this.forEach { row ->
         row.forEach { c -> if (c == ' ') print('-') else print(c)}
         println("")
     }
 }
 
-fun Array<CharArray>.findAdjacentPosFor(pos: Pair<Int, Int>): List<Pair<Int, Int>> {
+fun Grid.findAdjacentPosFor(pos: Pos): List<Pos> {
     return listOf(
         -1 to -1, -1 to 0, -1 to 1,
         0 to -1, 0 to 1,
@@ -85,12 +88,12 @@ fun Array<CharArray>.findAdjacentPosFor(pos: Pair<Int, Int>): List<Pair<Int, Int
         .toList()
 }
 
-fun Pair<Int, Int>.row(): Int = this.first
-fun Pair<Int, Int>.col(): Int = this.second
-val Array<CharArray>.rowCount: Int get() = size
-val Array<CharArray>.colCount: Int get() = firstOrNull()?.size ?: 0
-fun Array<CharArray>.validForGrid(pos: Pair<Int, Int>): Boolean = pos.row() in 0 until rowCount && pos.col() in 0 until colCount
-fun Array<CharArray>.cols(): List<List<Char>> =  (0 until this.colCount).map { c -> (0 until this.rowCount).map { r -> this[r][c] } }
-fun Array<CharArray>.rotateAnticlockwise():Array<CharArray> = this.cols().let { cols ->  Array(cols.size) { cols.reversed()[it].toCharArray() }
+fun Pos.row(): Int = this.first
+fun Pos.col(): Int = this.second
+val Grid.rowCount: Int get() = size
+val Grid.colCount: Int get() = firstOrNull()?.size ?: 0
+fun Grid.validForGrid(pos: Pos): Boolean = pos.row() in 0 until rowCount && pos.col() in 0 until colCount
+fun Grid.cols(): List<List<Char>> =  (0 until this.colCount).map { c -> (0 until this.rowCount).map { r -> this[r][c] } }
+fun Grid.rotateAnticlockwise():Grid = this.cols().let { cols ->  Array(cols.size) { cols.reversed()[it].toCharArray() }
 
 }
